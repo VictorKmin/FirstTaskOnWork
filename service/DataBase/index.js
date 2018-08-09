@@ -1,45 +1,83 @@
 const Sequelize = require('sequelize');
 const fs = require('fs');
-// Модельки робимо як клас
-module.exports = class dataBaseConnector {
+const resolve = require('path').resolve;
 
-    constructor() {
-        this.client = new Sequelize('testDB', 'root', 'root', {
-            host: 'localhost',
-            dialect: 'postgres',
-            operatorsAliases: false,
+module.exports = (() => {
+    let instance;
+    function initConnection() {
+            let client = new Sequelize('testDB', 'root', 'root', {
+                host: 'localhost',
+                dialect: 'postgres',
+                operatorsAliases: false,
 
-            pool: {
-                max: 5,
-                min: 0,
-                acquire: 30000,
-                idle: 10000
+                pool: {
+                    max: 5,
+                    min: 0,
+                    acquire: 30000,
+                    idle: 10000
+                }
+            });
+            let models = {};
+
+        function getModels() {
+            fs.readdir('./service/DataBase/models', (err, files) => {
+                files.forEach(file => {
+                    const modelName = file.split('.')[0];
+                    models[modelName] = client.import(resolve(`./service/DataBase/models/${modelName}`));
+                    // this.models[modelName] = constr().client.import(resolve(`./service/DataBase/models/${modelName}`));
+                    // console.log(constr().models.import(resolve(`./service/DataBase/models/${modelName}`)));
+                    console.log(client.models);
+                });
+            });
+        }
+
+        return {
+            getModel: (modelName) => models[modelName],
+            setModels: () => {
+                return getModels();
             }
-        });
-
-
-        this.models = [];
-
-        console.log(this.models);
-        fs.readdir('./service/DataBase/models', (err, files) => {
-            files.forEach(file => {
-                this.models.push(file.split('.')[0]);
-                console.log(this.models);
-            })
-        });
+        };
     }
-    a() {
-        forEach(nemaFile => {
-            console.log(nemaFile);
-            this.models = sequelize.import(resolve('./service/DataBase/models/'+ nemaFile));
-        })
+
+    return {
+        getInstance: () => {
+            if (!instance) {
+                instance = initConnection();
+            }
+            return instance;
+        }
     }
-};
+})();
 
-
-function a() {
-    forEach(nemaFile => {
-        console.log(nemaFile);
-        this.models = sequelize.import(resolve('./service/DataBase/models/'+ nemaFile));
-    })
-}
+// КОНЕКТОР ЧЕРЕЗ КЛАС
+// module.exports = class dataBaseConnector {
+//
+//     constructor() {
+//         this.client = new Sequelize('testDB', 'root', 'root', {
+//             host: 'localhost',
+//             dialect: 'postgres',
+//             operatorsAliases: false,
+//
+//             pool: {
+//                 max: 5,
+//                 min: 0,
+//                 acquire: 30000,
+//                 idle: 10000
+//             }
+//         });
+//         this.models = {};
+//     }
+//
+//     init() {
+//         fs.readdir('./service/DataBase/models', (err, files) => {
+//             files.forEach(file => {
+//                 const modelName = file.split('.')[0];
+//                 this.models[modelName] = this.client.import(resolve(`./service/DataBase/models/${modelName}`));
+//             });
+//         });
+//     }
+//
+//     getModel(modelName) {
+//         return this.models[modelName];
+//     }
+// };

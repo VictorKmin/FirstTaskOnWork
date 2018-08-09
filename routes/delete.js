@@ -1,33 +1,30 @@
 const express = require('express');
 const router = express.Router();
 
-
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('testDB', 'root', 'root', {
-    host: 'localhost',
-    dialect: 'postgres',
-    operatorsAliases: false,
-
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
-});
-
 router.post('/', async (req, res, next) => {
-
     const postgres = req.app.get('postgres');
-    const ID = req.body.ID;
-    // const allUsers = await postgres.client.query(`SELECT * FROM users WHERE ID = ${ID}` , { type: sequelize.QueryTypes.SELECT});
+    const UserModel = postgres.getModel('User');
+    const userId = req.body.ID;
+    let userToDelete = await UserModel.findAll({
+        where: {
+            ID: userId
+        }
+    });
 
-    //Цей селект працює нормально
-    const allUsers = await postgres.client.query('SELECT * FROM users', { type: sequelize.QueryTypes.SELECT});
-    const deletedUser =  postgres.client.query(`DELETE users WHERE ID = ${req.body.ID}`, { type: sequelize.QueryTypes.DELETE});
-    console.log(deletedUser);
-    console.log(allUsers);
-    res.send(JSON.stringify(allUsers))
+    if (!userToDelete || userToDelete.length === 0){
+        res.render('error', {
+            error: `USER WITH ID ${userId} IS NOT FOUND`
+        })
+    }  else {
+        res.render('delete', {
+            user: JSON.stringify(userToDelete)
+        });
+        await UserModel.destroy({
+            where: {
+                ID: userId
+            }
+        });
+    }
 });
 
 module.exports = router;
