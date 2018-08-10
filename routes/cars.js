@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const saveCarController = require('../controllers/cars/saveCar');
+const findAllCars = require('../controllers/cars/findAllCars');
+const deleteCarByID = require('../controllers/cars/deleteCarByID');
 
-router.get('/', async (req, res)=> {
-    const postgres = req.app.get('postgres');
-    const carModel = postgres.getModel('Cars');
-    let cars = await carModel.findAll();
+router.get('/', findAllCars);
 
-    res.json(cars);
-});
+router.post('/',saveCarController);
+
+router.get('/delete', deleteCarByID);
+
 
 module.exports = router;

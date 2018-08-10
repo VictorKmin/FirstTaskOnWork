@@ -7,13 +7,7 @@ const expBars = require("express-handlebars");
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const saveRouter = require('./routes/save');
-const deleteRouter = require('./routes/delete');
 const carRouter = require('./routes/cars');
-
-// // КОНЕКТОР ЧЕРЕЗ КЛАС
-// const postgres = new (require('./service/DataBase'))();
-// postgres.init();
 
 const postgres = new require('./service/DataBase').getInstance();
 postgres.setModels();
@@ -39,10 +33,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/save', saveRouter);
-app.use('/delete', deleteRouter);
-app.use('/cars', carRouter);
+app.use('/user', usersRouter);
+app.use('/car', carRouter);
 
 app.use(function (req, res, next) {
     next(createError(404));

@@ -24,8 +24,6 @@ module.exports = (() => {
                 files.forEach(file => {
                     const modelName = file.split('.')[0];
                     models[modelName] = client.import(resolve(`./service/DataBase/models/${modelName}`));
-                    // this.models[modelName] = constr().client.import(resolve(`./service/DataBase/models/${modelName}`));
-                    // console.log(constr().models.import(resolve(`./service/DataBase/models/${modelName}`)));
                     console.log(client.models);
                 });
             });

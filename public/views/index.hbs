@@ -1,19 +1,35 @@
 SAVE USER
-<form action="/save" method="post">
+<form action="/user" method="post">
     <input type="text" name="firstName"value="name"><br><br>
     <input type="number" name="age" max="120" min="1"><br><br>
     <input type="submit" value="SAVE USER">
 </form>
-<br><br><br><br><br><br>
+<br><br><br><br>
 DELETE USER BY ID
-<form action="/delete" method="post">
+<form action="/user/delete" method="get">
     <input type="number" name="ID" min="0"><br><br>
     <input type="submit" value="DELETE">
 </form>
+<br><br><br><br>
+FIND ALL USERS
+<form action="/user" method="get">
+    <input type="submit" value="FIND USERS">
+</form>
 <br><br><br><br><br><br>
 SAVE CAR
-<form action="/save" method="get">
+<form action="/car" method="post">
     <input type="text" name="Model" value="Model"><br><br>
     <input type="number" name="Year" maxlength="4" min="1800"><br><br>
     <input type="submit">
+</form>
+<br><br><br><br>
+DELETE CAR BY ID
+<form action="/car/delete" method="get">
+    <input type="number" name="ID" min="0"><br><br>
+    <input type="submit" value="DELETE">
+</form>
+<br><br><br><br>
+FIND ALL CARS
+<form action="/car" method="get">
+    <input type="submit" value="DELETE CAR">
 </form>
