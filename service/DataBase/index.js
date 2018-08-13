@@ -9,7 +9,6 @@ module.exports = (() => {
                 host: 'localhost',
                 dialect: 'postgres',
                 operatorsAliases: false,
-
                 pool: {
                     max: 5,
                     min: 0,
@@ -24,7 +23,6 @@ module.exports = (() => {
                 files.forEach(file => {
                     const modelName = file.split('.')[0];
                     models[modelName] = client.import(resolve(`./service/DataBase/models/${modelName}`));
-                    console.log(client.models);
                 });
             });
         }

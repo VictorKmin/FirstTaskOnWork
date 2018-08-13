@@ -2,20 +2,17 @@ const express = require('express');
 const router = express.Router();
 
 const saveUserByID = require('../controllers/users/saveUser');
-const findAllUsers = require('../controllers/users/findAllUsers');
+const findUsersByName = require('../controllers/users/findUserByName');
+const findUsers = require('../controllers/users/findUsers');
 const deleteUserByID = require('../controllers/users/deleteUserByID');
 
 
-//SAVE USER
-//
 router.post('/', saveUserByID);
 
-//FIND ALL USERS
-//
-router.get('/',findAllUsers);
+router.get('/findByName', findUsersByName);
 
-// DELETE USER BY ID
-//
-router.get('/delete', deleteUserByID);
+router.get('/', findUsers);
+
+router.delete('/', deleteUserByID);
 
 module.exports = router;

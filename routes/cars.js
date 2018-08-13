@@ -5,10 +5,8 @@ const findAllCars = require('../controllers/cars/findAllCars');
 const deleteCarByID = require('../controllers/cars/deleteCarByID');
 
 router.get('/', findAllCars);
-
 router.post('/',saveCarController);
-
-router.get('/delete', deleteCarByID);
+router.delete('/', deleteCarByID);
 
 
 module.exports = router;
